@@ -18,10 +18,10 @@ def title_list():
         clean_titles.append(clean_el)
     return clean_titles
 
-def file():
-    list = open('list.txt', 'w', encoding='utf-8')
+def create_file():
+    titles = open('list.txt', 'w', encoding='utf-8')
     for el in title_list():
-        text = list.write(el + '\n')
+        text = titles.write(el + '\n')
 
-file()
+create_file()
 print('Done')
