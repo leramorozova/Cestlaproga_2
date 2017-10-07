@@ -114,8 +114,8 @@ def stemming():
     for fl in lst:
         pieces=fl.split('.')
         number=pieces[2][:4]+'/'+pieces[1]
-        os.system(r"/home/lera/mystem -i -n " + inp + os.sep + fl + " ./Zvezda/mystem-plain/" + str(number) + os.sep + fl)
-        os.system(r"/home/lera/mystem -i -n " + inp + os.sep + fl + " ./Zvezda/mystem-xml/" + str(number) + os.sep + fl)
+        os.system(r"/home/lera/ms/mystem -i -n -e Windows-1251 " + inp + os.sep + fl + " ./Zvezda/mystem-plain/" + str(number) + os.sep + fl)
+        os.system(r"/home/lera/ms/mystem -i -n -d -e Windows-1251 --format xml  " + inp + os.sep + fl + " ./Zvezda/mystem-xml/" + str(number) + os.sep + fl)
 
 
 # за эту функцию очень извиняюсь, но у меня почему-то не сработал ---format xml, и пришлось крутиться
@@ -131,7 +131,7 @@ def xml_maker():
             lst = os.listdir(dir)
             for file_name in lst:
                 pieces=file_name.split('.')
-                os.rename(os.path.join(dir, file_name), os.path.join(dir, '.'.join(pieces[0:3])+'.xml'))
+                os.rename(os.path.join(dir, file_name), os.path.join(dir, '.'.join(pieces[0:2]) +'.' +pieces[2][:4]+'.xml'))
 
 
 def files_for_stemming(file):
@@ -155,4 +155,6 @@ def main():
     stemming()
     xml_maker()
 
+#main()
+stemming()
 
