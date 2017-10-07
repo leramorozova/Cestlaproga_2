@@ -21,10 +21,11 @@ def download_page(url):
     text=file.write('@url '+url+'\n')
     clean_text= code_cleaner(code)
     text=file.write(clean_text)
-    path='/home/lera/Cestlaproga_2/HW2/plain/'+str(date[-4:])+'/'+str(date[-7:-5])+'/'+file_name
+    path = os.path.join('.', 'Zvezda', 'plain', str(date[-4:]), str(date[-7:-5]), file_name)
     row = '%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s'
     line='\n'+row % (path, au, '', ' ', ti, date, 'публицистика', ' ', ' ', topic, ' ', 'нейтральный', 'н-возраст', 'н-уровень', 'краевая', url, 'Звезда', ' ', str(pieces[2][-4:]), 'газета', 'Россия', 'Пермский край', 'ru')
     return line
+
 
 def search_info(code):
     reg_au=re.search('</P>.*?<P>.*?<STRONG>(.*?)</STRONG>', code, flags=re.DOTALL)
@@ -75,52 +76,49 @@ def crawler():
     line = table.write('path\tauthor\tsex\tbirthday\theader\tcreated\tsphere\tgenre_fi\ttype\ttopic\tchronotop\tstyle\taudience_age\taudience_level\taudience_size\tsource\tpublication\tpublisher\tpubl_year\tmedium\tcountry\tregion\tlanguage')
     site_name = 'http://www.zwezda.perm.ru/news/?pub='
     for i in range(3677, 5333):
-        time.sleep(3)
+        time.sleep(5)
         url = site_name + str(i)
         line=table.write(download_page(url))
     return table
 
-def stemming(number):
-    inp='/home/lera/Cestlaproga_2/HW2/Zvezda/plain/20'+str(number)
-    lst = os.listdir(inp)
-    for fl in lst:
-        os.system(r"/home/lera/mystem -i -n " + inp + os.sep + fl + " /home/lera/Cestlaproga_2/HW2/Zvezda/mystem-plain/20"+str(number) + os.sep + fl)
-        os.system(r"/home/lera/mystem -i -n " + inp + os.sep + fl + " /home/lera/Cestlaproga_2/HW2/Zvezda/mystem-xml/20" + str(number) + os.sep + fl)
-
 
 def put_in_right_folder():
-    lst = os.listdir('/home/lera/Cestlaproga_2/HW2')
+    os.makedirs(os.path.join('.','trash'))
+    lst = os.listdir('.')
+    for file in lst:
+        if file[-4:]=='.txt':
+            files_for_stemming(file)
     for i in range(10, 18):
         for q in range(1, 13):
             if len(str(q)) == 1:
                 m = '0' + str(q)
             else:
                 m = str(q)
-            os.makedirs('./Zvezda/plain/20' + str(i) + '/' + m)
-            os.makedirs('./Zvezda/mystem-xml/20'+str(i)+ '/' + m)
-            os.makedirs('./Zvezda/mystem-plain/20'+str(i)+ '/' + m)
+            os.makedirs(os.path.join('.', 'Zvezda', 'plain', '20' + str(i), m))
+            os.makedirs(os.path.join('.', 'Zvezda', 'mystem-xml', '20'+str(i), m))
+            os.makedirs(os.path.join('.', 'Zvezda', 'mystem-plain', '20'+str(i), m))
     for file in lst:
-        if file=='Paper_project_2.py':
-            continue
-        elif file=='metadata.csv':
-            continue
-        elif file=='.~lock.metadata.csv#':
-            continue
-        year=file[-8:-4]
-        if year=='date':
-            continue
-        month=file[-11:-9]
-        shutil.move(os.path.join('/home/lera/Cestlaproga_2/HW2', file), '/home/lera/Cestlaproga_2/HW2/Zvezda/plain'+'/'+year+'/'+month)
-    for i in range(10,18):
-        for q in range(1, 13):
-            if len(str(q)) == 1:
-                m = '0' + str(q)
-            else:
-                m = str(q)
-            stemming(str(i)+'/'+m)
+        if file[-4:]=='.txt':
+            year = file[-8:-4]
+            if year == 'date':
+                continue
+            month = file[-11:-9]
+            shutil.move(os.path.join('.'),file), os.path.join('.' 'Zvezda', 'plain', year, month)
+        if file == 'metadata.csv':
+                shutil.move(os.path.join('.', 'metadata.csv'), os.path.join('.', 'Zvezda'))
 
-# за эту функцию очень извиняюсь. У меня почему-то не срабатывает операция --format xml в mystem
-# пришлось крутиться
+
+def stemming():
+    inp='./trash'
+    lst = os.listdir(inp)
+    for fl in lst:
+        pieces=fl.split('.')
+        number=pieces[2][:4]+'/'+pieces[1]
+        os.system(r"/home/lera/mystem -i -n " + inp + os.sep + fl + " ./Zvezda/mystem-plain/" + str(number) + os.sep + fl)
+        os.system(r"/home/lera/mystem -i -n " + inp + os.sep + fl + " ./Zvezda/mystem-xml/" + str(number) + os.sep + fl)
+
+
+# за эту функцию очень извиняюсь, но у меня почему-то не сработал ---format xml, и пришлось крутиться
 
 def xml_maker():
     for i in range (10,18):
@@ -129,12 +127,32 @@ def xml_maker():
                 m = '0' + str(q)
             else:
                 m = str(q)
-            dir='./Zvezda/mystem-xml/20'+str(i)+'/'+m
+            dir=os.path.join('.', 'Zvezda', 'mystem-xml', '20'+str(i), m)
             lst = os.listdir(dir)
             for file_name in lst:
                 pieces=file_name.split('.')
-                os.rename(dir+'/'+file_name, dir+'/'+'.'.join(pieces[0:3])+'.xml')
+                os.rename(os.path.join(dir, file_name), os.path.join(dir, '.'.join(pieces[0:3])+'.xml'))
 
-crawler()
-put_in_right_folder()
-xml_maker()
+
+def files_for_stemming(file):
+    pieces = file.split('.')
+    with open(file, 'r', encoding='Windows-1251') as file:
+        text = file.read()
+        lines = text.split('\n')
+        new_lines = lines[6:]
+    file_name='.'.join(pieces[0:3]) + '-1' + '.txt'
+    text_for_stem = open(file_name, 'w', encoding='Windows-1251')
+    article = text_for_stem.write('\n'.join(new_lines))
+    shutil.move(os.path.join('.', file_name), os.path.join('.', 'trash'))
+    return text_for_stem
+
+
+#если жизнь и рассудок догори вам, пожалуйста, включайте функции по очереди
+
+def main():
+    crawler()
+    put_in_right_folder()
+    stemming()
+    xml_maker()
+
+
