@@ -1,2 +1,2 @@
 Сылка на архив статей (~5000 шт.)
-https://drive.google.com/file/d/0B12kvXNPHUSpMUFZYjUzMTJYdXc/view?usp=sharing
+https://drive.google.com/open?id=0B12kvXNPHUSpMnpaLVZqTGlJdlU
