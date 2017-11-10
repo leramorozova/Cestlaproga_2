@@ -1,8 +1,0 @@
-Конспекты 2016:
-https://github.com/ElizavetaKuzmenko/Programming-and-computer-instruments
-https://github.com/leramorozova/apelsinchik
-https://github.com/ancatmara/learnpython2017
-
-Домашки:
-https://github.com/leramorozova/Cestlaproga
-https://github.com/leramorozova/Cestlaproga_2
