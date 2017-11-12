@@ -1,0 +1,57 @@
+[
+    {
+        "answer1": "stress1",
+        "answer2": "stress2",
+        "birthyear": "1998",
+        "education": "неоконченное высшее",
+        "home": "Москва",
+        "lang": "русский",
+        "name": "Федор",
+        "secname": "Игоревич",
+        "surname": "Голосов"
+    },
+    {
+        "answer1": "stress1",
+        "answer2": "stress1",
+        "birthyear": "1995",
+        "education": "высшее",
+        "home": "Самара",
+        "lang": "казахский",
+        "name": "Мария",
+        "secname": "Александровна",
+        "surname": "Барамыкина"
+    },
+    {
+        "answer1": "stress1",
+        "answer2": "stress1",
+        "birthyear": "1997",
+        "education": "среднее",
+        "home": "Санкт-Петербург",
+        "lang": "русский",
+        "name": "Артем",
+        "secname": "Алксеевич",
+        "surname": "Волков"
+    },
+    {
+        "answer1": "stress1",
+        "answer2": "stress2",
+        "birthyear": "1975",
+        "education": "высшее",
+        "home": "Москва",
+        "lang": "грузинский",
+        "name": "Нагервадзе",
+        "secname": "Автандиловна",
+        "surname": "Мария"
+    },
+    {
+        "answer1": "stress1",
+        "answer2": "stress1",
+        "birthyear": "1996",
+        "education": "неоконченное высшее",
+        "home": "Москва",
+        "lang": "русский",
+        "name": "Борис",
+        "secname": "Игоречив",
+        "surname": "Мельников"
+    }
+]

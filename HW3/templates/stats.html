@@ -1,0 +1,33 @@
+<!DOCTYPE HTML>
+<html>
+ <head>
+  <meta charset="utf-8">
+  <title>СТАТИСТИКА ОПРОСА</title>
+  <style>
+   table {
+    width: 600px; 
+    border: 1px solid green; 
+    margin: auto; 
+   }
+  </style>
+ </head>
+ <big>
+ <body>
+ <br>
+ <br>
+ <br>
+ <br>
+  <h1 align="center">Немного статистики вам в дом:</h1>
+ <br>
+  <table border="1">
+   <tr><th>Всего поучаствовало в опросе</th><th>{{ participants }}</th></th></tr>
+   <tr><td>Средний возраст участников опроса (на 2017 год)</td><td>{{ av_age }}</td></tr>
+   <tr><td>Из них полное высшее образрвание имеют</td><td>{{ educated }}</td></tr>
+   <tr><td>Из них из Москвы</td><td>{{ moscow_livers }}</td></tr>
+   <tr><td>Из них считают родным языком русский</td><td>{{ russian }}</td></tr>
+   <tr><td>Из них предпочитают ударение на второй слог в NOM</td><td>{{ stress2_nom }}</td></tr>
+   <tr><td>Из них предпочитают ударение на второй слог в ABL</td><td>{{ stress2_abl }}</td></tr>
+   </big>
+  </table>
+ </body>
+</html>

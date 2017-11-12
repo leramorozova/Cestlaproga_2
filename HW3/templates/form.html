@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Анкета участника</title>    
+    <meta charset="utf-8">
+    </head>
+<body>
+<form action="/thanks">
+<h2>Ваши личные данные</h2>
+<p>(авторы проекта клянутся ни с кем ими не делиться):</p>
+    <label>Имя: <input type="text" name="name"></label><br>
+    <label>Фамилия: <input type="text" name="surname"></label><br>
+    <label>Отчество (если его нет, поставьте дефис): <input type="text" name="secname"></label><br>
+    <label>Год рождения: <input type="text" name="birthyear"></label><br>
+    <label>Образование: <input type="text" name="education"></label><br>
+    <label>Город постоянного проживания: <input type="text" name="home"></label><br>
+    <label>Родной язык: <input type="text" name="lang"></label><br>
+<br>
+<br>
+<h2>Выразите свое мнение</h2>
+<p>1.    Как, на ваш взгляд, лучше поставить ударение?</p>
+<input type="radio" name="answer1" value="stress1">жи&#x301;за<Br>
+<input type="radio" name="answer1" value="stress2">жиза&#x301;<Br>
+<br>
+<small>Пример контекста:
+<i>"<b>Жиза</b>, я тоже постоянно сижу с прогой до ночи".</i>
+</small><br>
+<br>
+<p>2.    А здесь: "жизОй" или "жИзoй"?</p>
+<input type="radio" name="answer2" value="stress1">жи&#x301;за<Br>
+<input type="radio" name="answer2" value="stress2">жиза&#x301;<Br>
+<br>
+<small>Пример контекста:
+<i>"Этот мем был бы для меня <b>жизой</b>, если бы я пробивал все лекции. Слава богу, у меня хватило ума не делать этого".</i>
+</small><br>
+<br>
+<br>
+    <input type="submit" value="Я все">
+</form>
+</body>
+</html>

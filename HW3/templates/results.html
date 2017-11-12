@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Ура!</title>    
+    <meta charset="utf-8">
+  </head>
+<body>
+<br>
+<br>
+<br>
+<br>
+<h1 align="center">Вот, кто нашелся:</h1>
+<br>
+{% for name, age in names.items() %}
+<big><p align="center">{{ name }} {{ age }}</p></big>
+{% endfor %}
+</html>
