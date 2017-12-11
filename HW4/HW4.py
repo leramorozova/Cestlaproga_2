@@ -8,7 +8,7 @@
 # Нужно посчитать и визуализировать на графике все глоссы.
 
 import sqlite3
-
+#import matplotlib.pyplot as plt
 
 conn = sqlite3.connect('hittite.db')
 c = conn.cursor()
@@ -80,6 +80,19 @@ for corr in word_glosses:
             if el==item[1]:
                 c.execute('INSERT INTO words_glosses (id_word, id_gloss) VALUES (?, ?)',
                           [corr[0], item[0]])
+
+c.execute('SELECT id_word FROM words_glosses')
+nums=c.fetchall()
+words=[]
+for cor in nums:
+    for el in cor:
+        words.append(el)
+for i in range(1, 528):
+    if i in words:
+        continue
+    else:
+        c.execute('INSERT INTO words_glosses (id_word, id_gloss) VALUES (?, ?)',
+                  [i, 'No gloss'])
 
 conn.commit()
 conn.close()
