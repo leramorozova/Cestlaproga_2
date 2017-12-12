@@ -103,17 +103,19 @@ def graf():
     c.execute('SELECT * FROM words_glosses ORDER BY id_gloss')
     mass=c.fetchall()
     for cor in mass:
-        if cor[1] in stat_d:
-            stat_d[cor[1]]+=1
-        else:
-            stat_d[cor[1]]=1
-    for i in range(1, 18):
-        if i not in stat_d:
-            stat_d[i]=0
+        c.execute('SELECT gloss FROM glosses WHERE id = ?', (cor[1],))
+        name=c.fetchall()
+        try:
+            if name!=[] and name[0][0] in stat_d:
+                stat_d[name[0][0]]+=1
+            else:
+                stat_d[name[0][0]]=1
+        except IndexError:
+            continue
     plt.title("Визуализация использования представленных в словаре глосс")
-    for key in stat_d:
-        plt.scatter(key, stat_d[key], s=100)
-        plt.text(key, stat_d[key]+1, key)
+    for i, key in enumerate(stat_d):
+        plt.scatter(i, stat_d[key], s=100)
+        plt.text(i, stat_d[key]+1, key)
     plt.savefig('gloss_visualisation.pdf') # если хотите файл с графиком
     return print('figure is created successfully')
 
