@@ -1,18 +1,15 @@
 #  Это файл для всяких функций, которые делают содержания для страничек
 
 # to do:
-# 1. кудри (and others pluralia tantum в переводчике прил)
-# 2. чек полного переводчика на распарсенной странице
-# 3. Страница с переведенным текстом в бутстрапе
-# 4. Викторина (адд)
-# 5. What should I fuckin' do with FLASK???
+# 1. Викторина (адд)
+# 2. топ слов на странице
 
 import urllib.request
 from urllib import parse
 import re
 from pymystem3 import Mystem
-from bs4 import BeautifulSoup  # вот это мировой модуль aka как распарсить хтмл за пару минут и две строчки
-                               # (только надо установить, вот документация # https://www.crummy.com/software/BeautifulSoup/bs4/doc/)
+from bs4 import BeautifulSoup
+
 m = Mystem()
 
 print('Sorry! Pymystem3 is convenient for the work, but its processing may take much time.\nBe patient, please.\n')
@@ -43,8 +40,10 @@ def main_page():
     return html_clean
 
 # 10 самых частотных слов со страницы sports.ru, в ретурне их массив
-def top(html_clean):
+def top():
     d = {}
+    with open('html_clean.txt', 'w', encoding='UTF-8') as file:
+        html_clean = file.read()
     html_lower = html_clean.lower()
     mass = html_lower.split()
     for el in mass:
@@ -140,8 +139,7 @@ def adj_trans(word1, word2):
                     return [word1, word2]
                 else:
                     if 'мн' in analyz1[0]['gr']:
-                        lemma = m.lemmatize(word1)[0]
-                        return [lemma[:-1] + 'я', word2]
+                        return [word1[:-1] + 'я', word2]
                     else:
                         return [word1, word2]
             else:
@@ -209,14 +207,13 @@ def text_translation():
     with open('html_clean.txt', 'r', encoding='UTF-8') as file:
          text = file.read()
          mass = text.split()
-    # print('Translating of adjectives is processing...')
-    # for i in range(0, len(mass)-1):
-    #     collocation = adj_trans(mass[i], mass[i + 1])
-    #     mass[i], mass[i + 1] = collocation[0], collocation[1]  # пары прил + сущ переприсваиваются здесь
-    #     print(mass[i], mass[i + 1])
-    #     print ('(' + str(i + 1) + '/' + str(len(mass)) + ')')
-    #with open('translated.txt', 'w', encoding='UTF-8') as file: #  перестраховка
-    #    text = file.write(' '.join(mass))
+    print('Translating of adjectives is processing...')
+    for i in range(0, len(mass)-1):
+        collocation = adj_trans(mass[i], mass[i + 1])
+        mass[i], mass[i + 1] = collocation[0], collocation[1]  # пары прил + сущ переприсваиваются здесь
+        print ('(' + str(i + 1) + '/' + str(len(mass)) + ')')
+    with open('translated.txt', 'w', encoding='UTF-8') as file: #  перестраховка
+        text = file.write(' '.join(mass))
     print('Adjectives are translated, dealing with nouns...')
     for i in range(0, len(mass)):
         translated_word = main_translator(mass[i])
@@ -226,13 +223,9 @@ def text_translation():
             mass[i] == 'ЧМ'  #  жутко извиняюсь за этот костыль, у меня почему-то в через use_of dict не проходит
                              #  только эта лексема
         print('(' + str(i + 1) + '/' + str(len (mass)) + ')')
-        print(' '.join(mass))
     print('Translation is finished!')
-    print(' '.join(mass))
     with open('translated.txt', 'w', encoding='UTF-8') as file:
         text = file. write(' '.join(mass))
-
-text_translation()
 
 def main():
     crawler()
