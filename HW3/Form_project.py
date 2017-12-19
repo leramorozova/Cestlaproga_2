@@ -27,8 +27,9 @@ def thanks():
 obj=[]
 
 def data(name, surname, secname, birthyear, education, home, lang, answer1, answer2):
-    table = open('metadata.csv', 'w', encoding='utf-8')
-    line=name+','+surname+','+secname+','+birthyear+','+education+','+home+','+lang+','+answer1+','+answer2
+    table = open('metadata.csv', 'w', encoding = 'utf-8')
+    line=name + ',' + surname + ',' + secname + ',' + birthyear+',' + education + ',' + home + ',' + lang + \
+         ',' + answer1 + ','+answer2
     global obj
     obj.append(line)
     for el in obj:
@@ -42,16 +43,16 @@ def json():
 
 @app.route('/stats')
 def stats():
-    data=json_file_maker.table(json_file_maker.obj_maker())
-    participants=data[0]
-    av_age=data[1]
-    educated=data[2]
-    moscow_livers=data[3]
-    russian=data[4]
-    stress2_nom=data[5]
-    stress2_abl=data[6]
-    return render_template('stats.html', participants=participants, av_age=av_age, educated=educated,
-                           moscow_livers=moscow_livers, russian=russian, stress2_nom=stress2_nom, stress2_abl=stress2_abl)
+    data = json_file_maker.table(json_file_maker.obj_maker())
+    participants = data[0]
+    av_age = data[1]
+    educated = data[2]
+    moscow_livers = data[3]
+    russian = data[4]
+    stress2_nom = data[5]
+    stress2_abl = data[6]
+    return render_template('stats.html', participants = participants, av_age = av_age, educated = educated,
+                           moscow_livers = moscow_livers, russian = russian, stress2_nom = stress2_nom, stress2_abl = stress2_abl)
 
 @app.route('/search')
 def search():
