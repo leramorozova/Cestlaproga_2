@@ -2,7 +2,6 @@
 
 # to do:
 # 1. Викторина (адд)
-# 2. топ слов на странице
 
 import urllib.request
 from urllib import parse
@@ -40,10 +39,8 @@ def main_page():
     return html_clean
 
 # 10 самых частотных слов со страницы sports.ru, в ретурне их массив
-def top():
+def top(html_clean):
     d = {}
-    with open('html_clean.txt', 'w', encoding='UTF-8') as file:
-        html_clean = file.read()
     html_lower = html_clean.lower()
     mass = html_lower.split()
     for el in mass:
@@ -54,13 +51,13 @@ def top():
     val = []
     for el in d:
         val.append(d[el])
-    top = []
+    top = {}
     for i in range(10):
         maxim = max(val)
         for k, v in d.items():
             if v == maxim:
                 if k not in top:
-                    top.append(k)
+                    top[k] = v
                     d.pop(k)
                 break
         val.remove(maxim)
@@ -230,3 +227,7 @@ def text_translation():
 def main():
     crawler()
     text_translator()
+
+with open('translated.txt', 'r', encoding='UTF-8') as file:
+    text = file.read()
+print(text)

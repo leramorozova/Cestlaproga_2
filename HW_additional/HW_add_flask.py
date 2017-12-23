@@ -4,15 +4,13 @@ from flask import url_for, render_template, request, redirect
 
 app = Flask(__name__)
 
-# Главная страница с погодой и поиском. Еще там будет ссылка на sports.ru, но пока только красивый баннер
-
+# Главная страница с погодой и поиском. Еще там ccылка на sports.ru.
 @app.route('/')
 def form():
-    temperature=HW_add_content.weather()
+    temperature = HW_add_content.weather()
     if request.args:
         return render_template('result.html')
     return render_template('form.html', temperature=temperature)
-
 
 @app.route('/result')
 def result():
@@ -23,9 +21,11 @@ def result():
 
 @app.route('/revolutionary')
 def test():
+    top = HW_add_content.top(HW_add_content.main_page())
     with open('translated.txt', 'r', encoding='UTF-8') as file:
         translated = file.read()
-    return render_template('rev.html', translated = translated)
+        print(translated)
+    return render_template('rev.html', translated = translated, top = top)
 
 
 if __name__ == '__main__':

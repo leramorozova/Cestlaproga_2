@@ -53,8 +53,11 @@
       <br>
       <br>
       <br>
-      <h1>Самые частотные слова на sports.ru</h1>
+      <h1>Самые частотные слова на Sports.ru</h1>
       <br>
+	  {% for word, q in top.items() %}
+	  <p>"{{ word }}" употреблено {{ q }} раз</p>
+		{% endfor %}
       <br>
         <h1>Дореволюционный Sports.ru</h1>
         <br>
