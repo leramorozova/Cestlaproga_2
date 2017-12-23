@@ -8,6 +8,7 @@ from urllib import parse
 import re
 from pymystem3 import Mystem
 from bs4 import BeautifulSoup
+import random
 
 m = Mystem()
 
@@ -224,10 +225,48 @@ def text_translation():
     with open('translated.txt', 'w', encoding='UTF-8') as file:
         text = file. write(' '.join(mass))
 
+ANSWER = ''
+
+#  тест на яти
+def yat_test():
+    quiz = []
+    d = dictionary()
+    yat_words = []
+    simple_words = []
+    for word in main_page().split():
+        if len(word) > 2:
+            simple_words.append(word)
+    for word in d:
+        if 'ѣ' in d[word]:
+            yat_words.append(d[word])
+    quiz.append(yat_words)
+    quiz.append(simple_words)
+    i = random.randrange(0, 2, 1)
+    hand_of_fate = random.choice(quiz[i]).lower()  # в этой переменной записывается случайное слово (может с ять, может, нет)
+    choice = {}  # в этой переменной выбор одного из двух вариантов
+    if 'ѣ' in hand_of_fate:
+        alter = re.sub('ѣ', '?', hand_of_fate)
+        choice[alter] = hand_of_fate
+    else:
+        if hand_of_fate[1] in 'уеыаоэяиюё':
+            alter = alter = re.sub(hand_of_fate[1], '?', hand_of_fate)
+            choice[alter] = hand_of_fate
+        elif hand_of_fate[2] in 'уеыаоэяиюё':
+            alter = alter = re.sub(hand_of_fate[2], '?', hand_of_fate)
+            choice[alter] = hand_of_fate
+        elif hand_of_fate[0] in 'уеыаоэяиюё':
+            alter = alter = re.sub(hand_of_fate[0], '?', hand_of_fate)
+            choice[alter] = hand_of_fate
+        else:
+            alter = alter = re.sub(hand_of_fate[3], '?', hand_of_fate)
+            choice[alter] = hand_of_fate
+            choice[alter] = hand_of_fate
+    with open ('answer.txt', 'w', encoding = 'UTF-8') as file:
+        text = file.write(choice[alter])
+    return choice
+
+yat_test()
+
 def main():
     crawler()
     text_translator()
-
-with open('translated.txt', 'r', encoding='UTF-8') as file:
-    text = file.read()
-print(text)
