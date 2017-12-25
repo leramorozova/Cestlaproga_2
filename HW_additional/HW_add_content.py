@@ -1,8 +1,5 @@
 #  Это файл для всяких функций, которые делают содержания для страничек
 
-# to do:
-# 1. Викторина (адд)
-
 import urllib.request
 from urllib import parse
 import re
@@ -225,8 +222,6 @@ def text_translation():
     with open('translated.txt', 'w', encoding='UTF-8') as file:
         text = file. write(' '.join(mass))
 
-ANSWER = ''
-
 #  тест на яти
 def yat_test():
     quiz = []
@@ -264,8 +259,6 @@ def yat_test():
     with open ('answer.txt', 'w', encoding = 'UTF-8') as file:
         text = file.write(choice[alter])
     return choice
-
-yat_test()
 
 def main():
     crawler()
