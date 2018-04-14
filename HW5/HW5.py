@@ -4,7 +4,7 @@ import sqlite3
 import matplotlib.pyplot as plt
 
 
-def posts():
+def posts():  # скачиваю посты
     offsets = [0, 100, 200, 300]
     conn = sqlite3.connect('vkapi.db')
     c = conn.cursor()
@@ -28,7 +28,7 @@ def posts():
     conn.close()
 
 
-def comments():
+def comments():  # скачиваю комментарии к постам
     conn = sqlite3.connect('vkapi.db')
     c = conn.cursor()
     c.executescript("""
@@ -58,7 +58,7 @@ def comments():
     conn.close()
 
 
-def socio_info():
+def socio_info():  # скачиваю личную информацию каждого комментатора
     conn = sqlite3.connect('vkapi.db')
     c = conn.cursor()
     c.executescript("""
@@ -105,9 +105,7 @@ def socio_info():
     conn.close()
 
 
-
-# ГРАФИКИ НЕ ПРО ТО!!!
-def plots():
+def plots():  # рисую графики
     age_length = {}
     city_length = {}
     conn = sqlite3.connect('vkapi.db')
@@ -117,27 +115,36 @@ def plots():
     result = c.fetchall()
     for el in result:
         if el[2] in age_length:
-            age_length[el[2]] += 1
+            age_length[el[2]].append(int(el[0]))
         else:
-            age_length[el[2]] = 1
+            age_length[el[2]] = [int(el[0])]
         if el[1] in city_length:
-            city_length[el[1]] += 1
+            city_length[el[1]].append(int(el[0]))
         else:
-            city_length[el[1]] = 1
+            city_length[el[1]] = [int(el[0])]
+    for i in age_length:
+        age_length[i] = sum(age_length[i]) // len(age_length[i])
+    for i in city_length:
+        city_length[i] = sum(city_length[i]) // len(city_length[i])
     age_length.pop('')
     city_length.pop('')
     conn.commit()
     conn.close()
+    plt.figure(figsize=(30, 10))
     plt.bar(age_length.keys(), age_length.values())
     plt.title('Отношение возраста к длине комментария')
     plt.xlabel('AGE')
-    plt.ylabel('LENGTH')
-#    plt.savefig('age-length.png', format='png', dpi=100)
+    plt.ylabel('AVERAGE LENGTH')
+    plt.savefig('age-length.png', format='png', dpi=100)
     plt.clf()
+    plt.figure(figsize=(30, 10))
     plt.bar(city_length.keys(), city_length.values())
     plt.title('Отношение возраста к городу проживания')
     plt.xlabel('CITY')
-    plt.ylabel('LENGTH')
-    print(city_length)
+    plt.ylabel('AVERAGE LENGTH')
+    plt.xticks(range(len(city_length.keys())), city_length.keys(), rotation=90)
+    plt.savefig('city-length.png', format='png', dpi=100)
 
-plots()
+# Городов слишком много, мне никак не сделать это красиво :(
+
+def len_post():  # совсем забыла про длины постов:
