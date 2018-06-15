@@ -2,13 +2,11 @@ import re
 import os
 import sqlite3
 from collections import defaultdict
-import pickle
+#import pickle
 import random
 
 conn = sqlite3.connect('tokens.db')
 c = conn.cursor()
-
-#  TODO: Замена имен собственных на заглавные буквы из proper names
 
 def proper_names():
     content = ''
@@ -85,14 +83,15 @@ def trigramizer():
             model[t0, t1].append((t2, freq / bi[t0, t1]))
         else:
             model[t0, t1] = [(t2, freq / bi[t0, t1])]
-    with open('model.pickle', 'wb') as data:
-        pickle.dump(model, data)
+#    with open('model.pickle', 'wb') as data:
+#        pickle.dump(model, data)
     return model
 
 
 def generate_sentence():
-    with open('model.pickle', 'rb') as file:
-        model = pickle.load(file)
+#    with open('model.pickle', 'rb') as file:
+#        model = pickle.load(file)
+    model = trigramizer()
     phrase = ''
     t0, t1 = '$', '$'
     while 1:
@@ -115,7 +114,3 @@ def validation(sentence):
             sentence[i] = sentence[i].capitalize()
     sentence[0] = sentence[0].capitalize()
     return ' '.join(sentence)
-
-
-for i in range(100):
-    print(validation(generate_sentence()))
