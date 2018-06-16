@@ -1,2 +1,0 @@
-tweepy==3.6.0
-APSceduler==3.5.1

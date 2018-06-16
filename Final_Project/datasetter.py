@@ -1,12 +1,9 @@
 import re
 import os
-import sqlite3
 from collections import defaultdict
-#import pickle
 import random
+import tweepy
 
-conn = sqlite3.connect('tokens.db')
-c = conn.cursor()
 
 def proper_names():
     content = ''
@@ -23,35 +20,22 @@ def proper_names():
 
 
 def tokenizer():
-    c.executescript("""DROP TABLE IF EXISTS tokens;
-                       CREATE TABLE tokens
-                       (token TEXT);
-                        """)
     for file in os.listdir('./texts'):
-        with open('./texts/' + file, 'r', encoding='UTF-8') as text:
-            content = text.read().lower()
-            content = re.sub('[«»()]', '', content)
-            token_list = content.split()
-            for i in token_list:
-                if i[-1] in '.,:;?!…':
-                    c.execute('''INSERT INTO tokens (token) 
-                                                 VALUES (?)''', [i[:-1]])
-                    c.execute('''INSERT INTO tokens (token) 
-                                  VALUES (?)''', [i[-1]])
-                elif i[-2:] == '?!':
-                    c.execute('''INSERT INTO tokens (token) 
-                                      VALUES (?)''', [i[:-2]])
-                    c.execute('''INSERT INTO tokens (token) 
-                                 VALUES (?)''', [i[-2:]])
-                elif i[-3:] == '...':
-                    c.execute('''INSERT INTO tokens (token) 
-                                     VALUES (?)''', [i[:-3]])
-                    c.execute('''INSERT INTO tokens (token) 
-                                                     VALUES (?)''', [i[-3:]])
-                else:
-                    c.execute('''INSERT INTO tokens (token) 
-                                 VALUES (?)''', [i])
-    conn.commit()
+        with open('tokens.txt', 'a', encoding='UTF-8') as data:
+            with open('./texts/' + file, 'r', encoding='UTF-8') as text:
+                content = text.read().lower()
+                content = re.sub('[«»()]', '', content)
+                token_list = content.split()
+                for i in token_list:
+                    if i[-1] in '.,:;?!…' and i[-1] not in '1234567890':
+                        text = data.write(i[:-1] + '\n' + i[-1] + '\n')
+                    elif i[-2:] == '?!':
+                        text = data.write(i[:-2] + '\n' + i[-2] + '\n')
+                    elif i[-3:] == '...':
+                        text = data.write(i[:-3] + '\n' + i[-3] + '\n')
+                    else:
+                        text = data.write(i + '\n')
+        data.close()
 
 
 def gen_trigrams(tokens):
@@ -67,8 +51,8 @@ def gen_trigrams(tokens):
 
 
 def trigramizer():
-    c.execute('''SELECT token FROM tokens''')
-    tokens = [el[0] for el in c.fetchall()]
+    with open('tokens.txt', 'r', encoding='UTF-8') as data:
+        tokens = data.read().split('\n')
     trigrams = gen_trigrams(tokens)
 
     bi, tri = defaultdict(lambda: 0.0), defaultdict(lambda: 0.0)
@@ -83,14 +67,10 @@ def trigramizer():
             model[t0, t1].append((t2, freq / bi[t0, t1]))
         else:
             model[t0, t1] = [(t2, freq / bi[t0, t1])]
-#    with open('model.pickle', 'wb') as data:
-#        pickle.dump(model, data)
     return model
 
 
 def generate_sentence():
-#    with open('model.pickle', 'rb') as file:
-#        model = pickle.load(file)
     model = trigramizer()
     phrase = ''
     t0, t1 = '$', '$'
@@ -114,3 +94,19 @@ def validation(sentence):
             sentence[i] = sentence[i].capitalize()
     sentence[0] = sentence[0].capitalize()
     return ' '.join(sentence)
+
+
+API_KEY = "CFvvE8BNcONOSGopm5UAphRdR"
+API_SECRET = "AtWO6LIGP4XfuGW6OVegZIYh36Se8ySd9fNk4O8crORU3nPYfy"
+
+ACCESS_TOKEN = "1006262723691405313-Bvg2U7D6daqNqjgOvA5w8xiqzukQoc"
+ACCESS_TOKEN_SECRET = "OC2UP4JR4gedwvXQbrR2dbLFLJEtDTeNRVev3L8NRsa4r"
+
+
+def tweet():
+    auth = tweepy.OAuthHandler(API_KEY, API_SECRET)
+    auth.set_access_token(ACCESS_TOKEN, ACCESS_TOKEN_SECRET)
+
+    api = tweepy.API(auth)
+
+    api.update_status(validation(generate_sentence()))
